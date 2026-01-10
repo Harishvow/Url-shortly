@@ -13,5 +13,12 @@ async function GenerateShortUrl(req, res) {
   const Shorturl= `${process.env.BASE_URL}/${shortID}`;
   return res.json({ Shorturl });
 }
+async function findURL(req,res){ 
+  const shortId=req.params.shortId;
+  const result=await URL.findOne({shortId});
+  return res.json({  totalclicks: result.visitHistory.length,
+    analytics: result.visitHistory,
+   });
+}
 
-export default GenerateShortUrl;
+export {GenerateShortUrl,findURL};
