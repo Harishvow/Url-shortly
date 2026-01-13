@@ -1,25 +1,23 @@
 {
-  "name": "url-shortner",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "url shortner",
-  "main": "Server.js",
+  "description": "url shortner backend",
+  "type": "module",
+  "main": "src/Server.js",
   "scripts": {
     "start": "node src/Server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/Server.js"
   },
-  "type": "module",
   "author": "harish",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.2.1",
+    "express": "^4.22.1",
     "mongoose": "^9.0.2",
-    "nanoid": "^5.1.6",
-    "shortid": "^2.2.17"
+    "nanoid": "^5.1.6"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11",
-    "typescript": "^5.9.3"
+    "nodemon": "^3.1.11"
   }
 }

@@ -1,35 +1,48 @@
 import express from "express";
-import ConnectDb from "../Config/dbconfig.js";
-import router from "../routes/urlRouter.js";
-import URL from "./model/urlbackend.js";
 import dotenv from "dotenv";
+import cors from "cors";
+
+import ConnectDb from "./Config/dbconfig.js";
+import router from "./routes/urlRouter.js";
+import URL from "./model/urlbackend.js";
+
 dotenv.config();
-console.log(process.env.BASE_URL);
 
+console.log("Server file loaded");
+console.log("BASE_URL:", process.env.BASE_URL);
 
-ConnectDb();
+await ConnectDb();
 
 const app = express();
-const port = process.env.PORT || 5053;
+const port = process.env.PORT || 5054;
 
+app.use(cors());
 app.use(express.json());
-app.use("/url", router);
-app.use("/analytics/:shortId",router);
-app.get("/:shortId",async (req, res) => {
-  const shortId= req.params.shortId;
-   const entry=await URL.findOneAndUpdate(
-    {shortId},
-    {$push:{
-        visitHistory:{timestamp:Date.now()}
-    }},
 
+// API route
+app.use("/api/url", router);
 
-  )
-  res.redirect(entry.redirectURL)
-
+// Health check
+app.get("/", (req, res) => {
+  res.send("Backend is running");
 });
 
+// Redirect route (LAST)
+app.get("/:shortId", async (req, res) => {
+  const { shortId } = req.params;
 
+  const entry = await URL.findOneAndUpdate(
+    { shortId },
+    { $push: { visitHistory: { timestamp: Date.now() } } },
+    { new: true }
+  );
+
+  if (!entry) {
+    return res.status(404).send("Short URL not found");
+  }
+
+  res.redirect(entry.redirectURL);
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
