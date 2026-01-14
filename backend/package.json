@@ -5,8 +5,8 @@
   "type": "module",
   "main": "src/Server.js",
   "scripts": {
-    "start": "node src/Server.js",
-    "dev": "nodemon src/Server.js"
+    "start": "node server/Server.js",
+    "dev": "nodemon server/Server.js"
   },
   "author": "harish",
   "license": "ISC",
