@@ -27,27 +27,29 @@ app.get("/", (req, res) => {
 
 
 app.get("/:shortId", async (req, res) => {
-  console.log("REDIRECT HIT:", req.params.shortId);
-
   try {
+    const shortId = req.params.shortId;
+
+    console.log("Redirect request for:", shortId);
+
     const entry = await URL.findOneAndUpdate(
-      { shortId: req.params.shortId },
+      { shortId },
       { $push: { visitHistory: { timestamp: Date.now() } } },
       { new: true }
     );
 
     if (!entry) {
-      console.log("NOT FOUND IN DB:", req.params.shortId);
       return res.status(404).send("Short URL not found");
     }
 
-    console.log("REDIRECTING TO:", entry.redirectURL);
-    res.redirect(entry.redirectURL);
-  } catch (err) {
-    console.error("REDIRECT ERROR:", err);
-    res.status(500).send("Server error");
+    // 🔑 FORCE redirect (important)
+    return res.redirect(301, entry.redirectURL);
+  } catch (error) {
+    console.error("Redirect error:", error);
+    return res.status(500).send("Redirect failed");
   }
 });
+
 
 app.use("/api/url", router);
 app.listen(port, () => {
