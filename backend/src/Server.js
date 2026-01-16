@@ -20,7 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 
-app.use("/api/url", router);
+
 app.get("/", (req, res) => {
   res.send("URL Shortener Backend is running ");
 });
@@ -41,7 +41,7 @@ app.get("/:shortId", async (req, res) => {
 
   res.redirect(entry.redirectURL);
 });
-
+app.use("/api/url", router);
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
