@@ -19,10 +19,13 @@ const port = process.env.PORT || 5054;
 app.use(cors());
 app.use(express.json());
 
-// API route
-app.use("/api/url", router);
 
-// Redirect route (LAST)
+app.use("/api/url", router);
+app.get("/", (req, res) => {
+  res.send("URL Shortener Backend is running ");
+});
+
+
 app.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;
 
