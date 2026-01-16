@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "url shortner backend",
   "type": "module",
-  "main": "src/Server.js",
+  "main": "server/Server.js",
   "scripts": {
     "start": "node server/Server.js",
     "dev": "nodemon server/Server.js"
+
   },
   "author": "harish",
   "license": "ISC",
