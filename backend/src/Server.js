@@ -27,20 +27,28 @@ app.get("/", (req, res) => {
 
 
 app.get("/:shortId", async (req, res) => {
-  const { shortId } = req.params;
+  console.log("REDIRECT HIT:", req.params.shortId);
 
-  const entry = await URL.findOneAndUpdate(
-    { shortId },
-    { $push: { visitHistory: { timestamp: Date.now() } } },
-    { new: true }
-  );
+  try {
+    const entry = await URL.findOneAndUpdate(
+      { shortId: req.params.shortId },
+      { $push: { visitHistory: { timestamp: Date.now() } } },
+      { new: true }
+    );
 
-  if (!entry) {
-    return res.status(404).send("Short URL not found");
+    if (!entry) {
+      console.log("NOT FOUND IN DB:", req.params.shortId);
+      return res.status(404).send("Short URL not found");
+    }
+
+    console.log("REDIRECTING TO:", entry.redirectURL);
+    res.redirect(entry.redirectURL);
+  } catch (err) {
+    console.error("REDIRECT ERROR:", err);
+    res.status(500).send("Server error");
   }
-
-  res.redirect(entry.redirectURL);
 });
+
 app.use("/api/url", router);
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
