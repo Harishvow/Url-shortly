@@ -5,8 +5,7 @@
   "type": "module",
   "main": "server/Server.js",
   "scripts": {
-    "start": "node server/Server.js",
-    "dev": "nodemon server/Server.js"
+    "start": "node server/Server.js"
 
   },
   "author": "harish",
