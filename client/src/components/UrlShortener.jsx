@@ -1,6 +1,5 @@
 import { useState } from "react";
 const API = import.meta.env.VITE_API_BASE_URL;
-axios.post(`${API}/api/url`, data);
 function UrlShortener() {
   const [activeTab, setActiveTab] = useState("shorten");
   const [url, setUrl] = useState("");
@@ -21,7 +20,7 @@ function UrlShortener() {
     setShortUrl("");
 
     try {
-      const response = await fetch("http://localhost:5054/api/url", {
+      const response = await fetch(`${API}/api/url`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +56,7 @@ function UrlShortener() {
       const shortId = analyticsUrl.split("/").pop();
 
       const response = await fetch(
-        `http://localhost:5054/api/url/analytics/${shortId}`
+        `${API}/api/url/analytics/${shortId}`
       );
 
       const data = await response.json();
