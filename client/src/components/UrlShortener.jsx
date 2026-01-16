@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+const API = import.meta.env.VITE_API_BASE_URL;
+axios.post(`${API}/api/url`, data);
 function UrlShortener() {
   const [activeTab, setActiveTab] = useState("shorten");
   const [url, setUrl] = useState("");
