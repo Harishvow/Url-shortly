@@ -22,11 +22,6 @@ app.use(express.json());
 // API route
 app.use("/api/url", router);
 
-// Health check
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
-
 // Redirect route (LAST)
 app.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;
