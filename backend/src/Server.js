@@ -27,30 +27,20 @@ app.get("/", (req, res) => {
 
 
 app.get("/:shortId", async (req, res) => {
-  try {
-    const shortId = req.params.shortId;
+  const { shortId } = req.params;
 
-    console.log("Redirect request for:", shortId);
+  const entry = await URL.findOneAndUpdate(
+    { shortId },
+    { $push: { visitHistory: { timestamp: Date.now() } } },
+    { new: true }
+  );
 
-    const entry = await URL.findOneAndUpdate(
-      { shortId },
-      { $push: { visitHistory: { timestamp: Date.now() } } },
-      { new: true }
-    );
-
-    if (!entry) {
-      return res.status(404).send("Short URL not found");
-    }
-
-    // 🔑 FORCE redirect (important)
-    return res.redirect(301, entry.redirectURL);
-  } catch (error) {
-    console.error("Redirect error:", error);
-    return res.status(500).send("Redirect failed");
+  if (!entry) {
+    return res.status(404).send("Short URL not found");
   }
+
+  res.redirect(entry.redirectURL);
 });
-
-
 app.use("/api/url", router);
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
